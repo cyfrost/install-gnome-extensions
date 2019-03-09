@@ -53,7 +53,7 @@ You can find and enable the extensions in GNOME Tweak Tool app > Extensions page
 
 ### Alternate way
 
-Single command to download the latest version of the script, make it executable, and run it.
+Single command to download the latest version of the script and run it.
 
 `wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh && sh install_gnome_extensions.sh`
 
