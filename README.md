@@ -1,26 +1,30 @@
-## What
-A simple bash script that automates downloading and installing of GNOME Shell Extensions you tell it to.
+# Install GNOME Shell Extensions
+A simple bash script that you can run to automatically downloading and install all the [GNOME Shell Extensions](https://extensions.gnome.org/) you want.
 
-## Why
+## Why?
 Setting up a new distro installation running GNOME desktop often involves installing some GNOME Shell extensions that you like or want. This script saves me time in that I just have to open the script once, input all the extension IDs, and everything else is taken care of.
+
+## How This Works
+
+The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of extensions contributed from many users. Each extension gets a unique ID called extension ID. You can find all the IDs of the extensions you want and give it to this script and all the specified extensions are automatically downloaded (with the latest versions matching your GNOME Shell version) and installed.
 
 ## Download & Usage
 
-### Dependencies
+### Preparation 
 
-This script requires these dependencies: `curl, wget, jq, unzip` for API requests to Extensions site, JSON processing for extension info, Wget for downloading the extensions, and Unzip for installing the extensions.
+This script depends on: `curl, wget, jq, unzip` for API requests to Extensions site, JSON processing for extension info, Wget for downloading the extensions, and Unzip for installing the extensions.
 
 You most probably already have these dependencies installed, otherwise they're just a install command away from your distro's repos.
 
 For Fedora: `sudo dnf install -y curl wget jq unzip`
 
-### Using the script
+### Getting the Extensions
 
 #### 1. Download the script
 
-You can download the script directly from the browser or by using a command like `wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh`
+You can download the script directly from the browser or by using the command: `wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh`
 
-#### 2. Get the IDs of all Extensions you want to install
+#### 2. Get the IDs of Extensions you want to install
 
 First, it is important to understand that this script downloads and installs the GNOME Shell Extensions based on their Extension IDs. Each extension is given a unique ID which is almost always visible in its URL page.
 
@@ -28,7 +32,7 @@ For example, the popular [User Themes](https://extensions.gnome.org/extension/19
 
 Similarly, Just write down all the IDs of the extensions you want to install.
 
-Now open the script downloaded in step 1 using a text editor and paste those ids in the `extension_IDs_to_install` array (each ID separated with space). Save it and close.
+Now open the script downloaded in step 1 using a text editor and enter the previously noted IDs in the `extension_IDs_to_install` array (each ID separated with space). Save it and close.
 
 #### 3. Run the script
 
