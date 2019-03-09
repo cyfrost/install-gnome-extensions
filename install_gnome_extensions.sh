@@ -2,8 +2,15 @@
 
 # From https://github.com/cyfrost/install-gnome-extensions
 
-# An extension ID is a unique number assigned to every extension found in https://extensions.gnome.org/ catalog.
+_term() { 
+  printf "\n\n${normal_text}";
+  trap - SIGINT SIGTERM # clear the trap
+  kill -- -$$
+}
 
+trap _term SIGTERM SIGINT
+
+# An extension ID is a unique number assigned to every extension found in https://extensions.gnome.org/ catalog.
 # To obtain the ID of an extension you want to install, simply look for the number in its extension URL page. For example, the ID of the popular "User Themes" extension is 19, which is directly visible in it's URL: https://extensions.gnome.org/extension/19/user-themes/.
 
 # You can specify the IDs of all the extensions you want to install in the below array (space delimited). In the default example, I've added the 3 ids of the most popular extensions as a sample.
@@ -22,7 +29,7 @@ gnome_shell_version="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | 
 # sudo dnf install wget curl jq unzip -y
 # sudo apt install wget curl jq unzip -y
 
-install_shell_extensions(){
+function install_shell_extensions(){
 
     for ext_id in "${extension_IDs_to_install[@]}"; do
 
@@ -31,7 +38,7 @@ install_shell_extensions(){
         http_response_header="$(curl -s -o /dev/null -I -w "%{http_code}" $request_url)";
 
         if [ $http_response_header = 404 ]; then
-            printf "\n${error_text}No extension exists with the given ID $ext_id (Skipping this).\n";
+            printf "\n${error_text}Error: No extension exists with ID $ext_id (Skipping this).\n";
             continue;
         fi
 
@@ -42,7 +49,6 @@ install_shell_extensions(){
         ext_uuid="`echo $ext_info | jq -r '.uuid'`";
         ext_version="`echo $ext_info | jq -r '.version'`";
         download_url="https://extensions.gnome.org"$direct_dload_url;
-        filename=$(basename $download_url);
         target_installation_dir="/home/$USER/.local/share/gnome-shell/extensions/$ext_uuid";
         printf "${status_text}\nDownloading and installing \"$extension_name\"${normal_text}";
         printf "${info_text}"
@@ -50,9 +56,14 @@ install_shell_extensions(){
         printf "\nExtension Version: v$ext_version";
         printf "\nURL: $download_url";
         printf "\nUUID: \"$ext_uuid\"";
-        #printf "\nFilename: $filename";
         printf "\nInstalling to: \"$target_installation_dir\"";
-        printf "\nPlease wait..."
+
+        if [ -d "$target_installation_dir" ]; then
+            confirm_action "${normal_text}This extension is already installed. Would you like to overwrite it? (y/n): " || continue;
+        fi
+        
+        printf "${info_text}Please wait..."
+        filename=$(basename $download_url);
         wget -q $download_url;
         mkdir -p $target_installation_dir;
         unzip -o -q $filename -d $target_installation_dir;
@@ -63,18 +74,24 @@ install_shell_extensions(){
     printf "\n";
 }
 
-printf "\nGNOME Shell Extensions Installer\n================================\n${status_text}This script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
+function confirm_action() {
+    while true; do
+    printf "\n${normal_text}";
+    read -p "$1" yn
+    case $yn in
+        [Yy]* ) return 0;;
+        [Nn]* ) return 1;;
+        * ) echo "Please answer with 'y' or 'n'.";;
+    esac
+done
+}
+
+printf "\n================================\nGNOME Shell Extensions Installer\n================================\n${status_text}This script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
 
 if [ ${#extension_IDs_to_install[@]} -eq 0 ]; then
-
-    printf "\nError: No extension IDs have been specified for installation.\n\nUsage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...\nExample: sh install_gnome_extensions.sh 6 8 19\n\n";
-
+    printf "\nError: No extension IDs have been specified for installation.\n\nUsage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...\n\nExample usage: sh install_gnome_extensions.sh 6 8 19\n\n";
 else
-
     printf "\nGNOME Shell version detected: $gnome_shell_version\nStarting installation...\n";
-
     install_shell_extensions;
-
     printf "${status_text}Finished!\nYou may want to use GNOME Tweak Tool to enable these extensions.\n\n${normal_text}";
-
 fi
