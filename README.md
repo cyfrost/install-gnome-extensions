@@ -44,9 +44,9 @@ All the extensions specified should now be downloaded and installed automaticall
 
 Now, you want to enable the installed extensions. You can do so by using the [GNOME Tweak Tool app](https://linuxconfig.org/how-to-install-tweak-tool-on-ubuntu-18-04-bionic-beaver-linux) with relative ease.
 
-For Fedora: `sudo dnf install -y gnome-tweak-tool && gnome-tweak-tool`
+For Fedora: `sudo dnf install -y gnome-tweak-tool && gnome-tweaks`
 
-For Ubuntu: `sudo apt install -y gnome-tweak-tool && gnome-tweak-tool`
+For Ubuntu: `sudo apt install -y gnome-tweak-tool && gnome-tweaks`
 
 You can find and enable the extensions in GNOME Tweak Tool app > Extensions page.
 
