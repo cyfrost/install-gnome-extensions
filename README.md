@@ -1,5 +1,5 @@
 # Install GNOME Shell Extensions
-A simple bash script that you can run to automatically downloading and install all the [GNOME Shell Extensions](https://extensions.gnome.org/) you want.
+A simple bash script that you can run to automatically download and install all the [GNOME Shell Extensions](https://extensions.gnome.org/) you want.
 
 ## Why?
 Setting up a new distro installation running GNOME desktop often involves installing some GNOME Shell extensions that you like or want. This script saves me time in that I just have to open the script once, input all the extension IDs, and everything else is taken care of.
