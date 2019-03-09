@@ -63,11 +63,11 @@ install_shell_extensions(){
     printf "\n";
 }
 
-printf "\n${status_text}Welcome. This script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
+printf "\nGNOME Shell Extensions Installer\n================================\n${status_text}This script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
 
 if [ ${#extension_IDs_to_install[@]} -eq 0 ]; then
 
-    printf "\n${info_text}No extension IDs have been specified for installation.\nPlease open this script in a text editor to specify the extension IDs for installation.${normal_text}\n\n";
+    printf "\nError: No extension IDs have been specified for installation.\n\nUsage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...\nExample: sh install_gnome_extensions.sh 6 8 19\n\n";
 
 else
 
@@ -75,6 +75,6 @@ else
 
     install_shell_extensions;
 
-    printf "${status_text}Finished!\nExtensions were successfully installed but not enabled, you can enable them by using the GNOME Tweak Tool application.\n\n${normal_text}";
+    printf "${status_text}Finished!\nYou may want to use GNOME Tweak Tool to enable these extensions.\n\n${normal_text}";
 
 fi
