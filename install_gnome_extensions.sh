@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# From https://github.com/cyfrost/gnome-shell-extension-installer
+# From https://github.com/cyfrost/install-gnome-extensions
 
 # An extension ID is a unique number assigned to every extension found in https://extensions.gnome.org/ catalog.
 
@@ -46,7 +46,7 @@ install_shell_extensions(){
           printf "${status_text}\nDownloading and installing \"$extension_name\"${normal_text}";
           printf "${info_text}"
           printf "\nExtension ID: $ext_id";
-          printf "\nExtension Version: v$ext_version$";
+          printf "\nExtension Version: v$ext_version";
           printf "\nURL: $download_url";
           printf "\nUUID: \"$ext_uuid\"";
           #printf "\nFilename: $filename";
