@@ -2,6 +2,13 @@
 
 # From https://github.com/cyfrost/gnome-shell-extension-installer
 
+# An extension ID is a unique number assigned to every extension found in https://extensions.gnome.org/ catalog.
+
+# To obtain the ID of an extension you want to install, simply look for the number in its extension URL page. For example, the ID of the popular "User Themes" extension is 19, which is directly visible in it's URL: https://extensions.gnome.org/extension/19/user-themes/.
+
+# You can specify the IDs of all the extensions you want to install in the below array (space delimited). In the default example, I've added the 3 ids of the most popular extensions as a sample.
+extension_IDs_to_install=(6 8 19)
+
 # Defining text colors for statuses.
 info_text=$(tput setaf 4);
 normal_text=$(tput sgr0);
@@ -14,13 +21,6 @@ gnome_shell_version="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | 
 # Install dependencies if needed (Ubuntus* ships with them, but Fedora doesn't afaik).
 # sudo dnf install wget curl jq unzip -y
 # sudo apt install wget curl jq unzip -y
-
-# An extension ID is a unique number assigned to every extension found in https://extensions.gnome.org/ catalog.
-
-# To obtain the ID of an extension you want to install, simply look for the number in its extension URL page. For example, the ID of the popular "User Themes" extension is 19, which is directly visible in it's URL: https://extensions.gnome.org/extension/19/user-themes/.
-
-# You can specify the IDs of all the extensions you want to install in the below array (space delimited). In the default example, I've added the 3 ids of the most popular extensions as a sample.
-extension_IDs_to_install=(6 8 19)
 
 install_shell_extensions(){	
         for ext_id in "${extension_IDs_to_install[@]}"; do	
