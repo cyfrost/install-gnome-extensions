@@ -18,7 +18,7 @@ For Fedora: `sudo dnf install -y curl wget jq unzip`
 
 #### 1. Download the script
 
-You can download the script directly from the browser or by using a command like `wget -O install_gnome_shell_extension.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_shell_extension.sh`
+You can download the script directly from the browser or by using a command like `wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh`
 
 #### 2. Get the IDs of all Extensions you want to install
 
@@ -36,7 +36,7 @@ This script does not require root permissions since it only needs the User's loc
 
 Open a Terminal window in the location of the script and run
 
-`sh install_gnome_shell_extension.sh`
+`sh install_gnome_extensions.sh`
 
 All the extensions specified should now be downloaded and installed automatically.
 
@@ -49,7 +49,7 @@ Now, you want to enable the installed extensions. You can do so by using the [GN
 
 Single command to download the latest version of the script, make it executable, and run it.
 
-`wget -O install_gnome_shell_extension.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_shell_extension.sh && chmod +x install_gnome_shell_extension.sh && ./install_gnome_shell_extension.sh`
+`wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh && sh install_gnome_extensions.sh`
 
 
 
