@@ -8,6 +8,8 @@ Setting up a new distro installation running GNOME desktop often involves instal
 
 The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of extensions contributed from many users. Each extension gets a unique ID called extension ID. You can find all the IDs of the extensions you want and give it to this script and all the specified extensions are automatically downloaded (with the latest versions matching your GNOME Shell version) and installed.
 
+![Screen Capture](https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/extensions-installer.png)
+
 ## Download & Usage
 
 ### Preparation 
