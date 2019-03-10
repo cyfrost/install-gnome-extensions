@@ -10,7 +10,7 @@ _term() {
 
 trap _term SIGTERM SIGINT
 
-if [ $(id -u) = 0 ]; then
+if [ "$(id -u)" = 0 ]; then
    printf "\nRunning this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.\n\n"
    exit 1
 fi
@@ -33,9 +33,9 @@ function CheckDependencies(){
 
 echo -en "\nChecking dependencies... ";
 dependencies=("$@")
-for name in ${dependencies[@]}
+for name in "${dependencies[@]}"
 do
-  command -v $name >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: $name${normal_text}";deps=1; }
+  command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: "$name"${normal_text}";deps=1; }
 done
 [[ $deps -ne 1 ]] && echo "OK" || { echo -en "${error_text}\n\nPlease install the above commands and rerun this script\n\n${normal_text}";exit 1; }
 }
@@ -57,21 +57,21 @@ function install_shell_extensions(){
 
         request_url="https://extensions.gnome.org/extension-info/?pk=$ext_id&shell_version=$gnome_shell_version";
 
-        http_response_header="$(curl -s -o /dev/null -I -w "%{http_code}" $request_url)";
+        http_response_header="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")";
 
-        if [ $http_response_header = 404 ]; then
+        if [ "$http_response_header" = 404 ]; then
             printf "\n${error_text}Error: No extension exists with ID $ext_id (Skipping this).\n";
             continue;
         fi
 
         printf "${normal_text}\n";
-        ext_info="$(curl -s $request_url)";
-        extension_name="`echo $ext_info | jq -r .name`";
-        direct_dload_url="`echo $ext_info | jq -r '.download_url'`";
-        ext_uuid="`echo $ext_info | jq -r '.uuid'`";
-        ext_version="`echo $ext_info | jq -r '.version'`";
-        ext_homepage="`echo $ext_info | jq -r '.link'`";
-        ext_description="`echo $ext_info | jq -r '.description'`";
+        ext_info="$(curl -s "$request_url")";
+        extension_name="$(echo "$ext_info" | jq -r '.name')"
+        direct_dload_url="$(echo "$ext_info" | jq -r '.download_url')";
+        ext_uuid="$(echo "$ext_info" | jq -r '.uuid')";
+        ext_version="$(echo "$ext_info" | jq -r '.version')";
+        ext_homepage="$(echo "$ext_info" | jq -r '.link')";
+        ext_description="$(echo "$ext_info" | jq -r '.description')";
         download_url="https://extensions.gnome.org"$direct_dload_url;
         target_installation_dir="/home/$USER/.local/share/gnome-shell/extensions/$ext_uuid";
         printf "${status_text}\nDownloading and installing \"$extension_name\"${normal_text}";
@@ -87,11 +87,11 @@ function install_shell_extensions(){
         fi
 
         printf "${info_text}Please wait..."
-        filename=$(basename $download_url);
-        wget -q $download_url;
-        mkdir -p $target_installation_dir;
-        unzip -o -q $filename -d $target_installation_dir;
-        rm $filename;
+        filename="$(basename "$download_url")";
+        wget -q "$download_url";
+        mkdir -p "$target_installation_dir";
+        unzip -o -q "$filename" -d "$target_installation_dir";
+        rm "$filename";
         printf "\nDone!\n";
         printf "${normal_text}"
     done
@@ -101,7 +101,7 @@ function install_shell_extensions(){
 function confirm_action() {
     while true; do
     printf "\n${normal_text}";
-    read -p "$1" yn
+    read -rep "$1" yn
     case $yn in
         [Yy]* ) return 0;;
         [Nn]* ) return 1;;
@@ -112,7 +112,7 @@ done
 
 printf "\n================================\nGNOME Shell Extensions Installer\n================================\nThis script allows you to install your favourite GNOME Shell extensions with ease of use.\nSee https://github.com/cyfrost/install-gnome-extensions/blob/master/README.md for more info.\n${normal_text}";
 
-if [ $extensions_count -eq 0 ]; then
+if [ "$extensions_count" -eq 0 ]; then
     printf "\n${status_text}Usage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...${normal_text}\n\nExample usage: sh install_gnome_extensions.sh 6 8 19\n\n";
 else
     printf "\nGNOME Shell version detected: $gnome_shell_version\nStarting installation for $extensions_count extensions...\n";
