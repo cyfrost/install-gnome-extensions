@@ -8,7 +8,7 @@ _term() {
   kill -- -$$
 }
 
-trap _term SIGTERM SIGINT
+trap _term INT TERM
 
 if [ "$(id -u)" = 0 ]; then
    printf "\nRunning this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.\n\n"
@@ -19,7 +19,7 @@ fi
 # To obtain the ID of an extension you want to install, simply look for the number in its extension URL page. For example, the ID of the popular "User Themes" extension is 19, which is directly visible in it's URL: https://extensions.gnome.org/extension/19/user-themes/.
 
 # You can specify the IDs of all the extensions you want to install in the below array (space delimited). In the default example, I've added the 3 ids of the most popular extensions as a sample.
-extension_IDs_to_install=( "$@" )
+extension_IDs_to_install=("$@")
 
 extensions_count=${#extension_IDs_to_install[@]}
 
@@ -35,7 +35,7 @@ echo -en "\nChecking dependencies... ";
 dependencies=("$@")
 for name in "${dependencies[@]}"
 do
-  command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: "$name"${normal_text}";deps=1; }
+  command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: $name${normal_text}";deps=1; }
 done
 [[ $deps -ne 1 ]] && echo "OK" || { echo -en "${error_text}\n\nPlease install the above commands and rerun this script\n\n${normal_text}";exit 1; }
 }
@@ -76,6 +76,7 @@ function install_shell_extensions(){
         target_installation_dir="/home/$USER/.local/share/gnome-shell/extensions/$ext_uuid";
         printf "${status_text}\nDownloading and installing \"$extension_name\"${normal_text}";
         printf "${info_text}"
+        printf "\nDescription: $ext_description";
         printf "\nExtension ID: $ext_id";
         printf "\nExtension Version: v$ext_version";
         printf "\nHomepage: https://extensions.gnome.org$ext_homepage";
