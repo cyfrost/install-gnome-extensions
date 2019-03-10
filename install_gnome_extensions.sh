@@ -29,6 +29,21 @@ normal_text=$(tput sgr0);
 error_text=$(tput setaf 1);
 status_text=$(tput setaf 3);
 
+function CheckDependencies(){
+
+echo -en "\nChecking dependencies... \n";
+dependencies=("$@")
+for name in ${dependencies[@]}
+do
+  command -v $name >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: $name${normal_text}";deps=1; }
+done
+[[ $deps -ne 1 ]] || { echo -en "${error_text}\n\nPlease install the above commands and rerun this script\n\n${normal_text}";exit 1; }
+}
+
+dependencies=(wget curl jq unzip gnome-shell-extension-tool)
+
+CheckDependencies "${dependencies[@]}"
+
 # Getting the current GNOME Shell version so that an extension corresponding to it can be pulled safely.
 gnome_shell_version="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)";
 
@@ -95,10 +110,10 @@ function confirm_action() {
 done
 }
 
-printf "\n================================\nGNOME Shell Extensions Installer\n================================\n${status_text}This script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
+printf "\n================================\nGNOME Shell Extensions Installer\n================================\nThis script allows you to install your favourite GNOME Shell extensions with ease of use.\nSee https://github.com/cyfrost/install-gnome-extensions/blob/master/README.md for more info.\n${normal_text}";
 
 if [ $extensions_count -eq 0 ]; then
-    printf "\nError: No extension IDs have been specified for installation.\n\nUsage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...\n\nExample usage: sh install_gnome_extensions.sh 6 8 19\n\n";
+    printf "\n${status_text}Usage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...${normal_text}\n\nExample usage: sh install_gnome_extensions.sh 6 8 19\n\n";
 else
     printf "\nGNOME Shell version detected: $gnome_shell_version\nStarting installation for $extensions_count extensions...\n";
     install_shell_extensions;
