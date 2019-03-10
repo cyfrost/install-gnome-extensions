@@ -31,13 +31,13 @@ status_text=$(tput setaf 3);
 
 function CheckDependencies(){
 
-echo -en "\nChecking dependencies... \n";
+echo -en "\nChecking dependencies... ";
 dependencies=("$@")
 for name in ${dependencies[@]}
 do
   command -v $name >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: $name${normal_text}";deps=1; }
 done
-[[ $deps -ne 1 ]] || { echo -en "${error_text}\n\nPlease install the above commands and rerun this script\n\n${normal_text}";exit 1; }
+[[ $deps -ne 1 ]] && echo "OK" || { echo -en "${error_text}\n\nPlease install the above commands and rerun this script\n\n${normal_text}";exit 1; }
 }
 
 dependencies=(wget curl jq unzip gnome-shell-extension-tool)
