@@ -192,6 +192,9 @@ while test $# -gt 0; do
         --overwrite) 
 		    OVERWRITE_EXISTING=true
             ;;
+        --help) 
+		    print_usage; exit 0;
+            ;;
     esac
     IsNumber "$1" && EXTENSIONS_TO_INSTALL+=($1)
     shift
