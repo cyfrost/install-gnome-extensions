@@ -6,7 +6,7 @@ Setting up a new GNOME desktop on any distro often involves downloading and inst
 
 ## How This Works
 
-The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of useful extensions contributed from many users for the GNOME desktop. Each extension gets a unique number called extension ID (which is [visible in the extension URL](https://github.com/cyfrost/install-gnome-extensions#2-get-the-ids-of-extensions-you-want-to-install-find-id)). Find and pass the IDs of extensions you want installed as arguments when running this script and will be downloaded and installed (latest extension version available matching your GNOME Shell version).
+The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of useful extensions contributed from many users for the GNOME desktop. Each extension gets a unique number called extension ID (which is visible in the extension URL). Find and pass the IDs of extensions you want installed as arguments when running this script and will be downloaded and installed (latest extension version available matching your GNOME Shell version).
 
 ## Download & Usage
 
@@ -51,12 +51,18 @@ All the specified extensions will be downloaded and installed automatically.
 
 `./install_gnome_extensions.sh --enable 6 8 19` 
 
-This example will install extensions with IDs [6](https://extensions.gnome.org/extension/6/applications-menu/), [8](https://extensions.gnome.org/extension/8/places-status-indicator/), [19](https://extensions.gnome.org/extension/19/user-themes/). 
+This example will install extensions with IDs [6](https://extensions.gnome.org/extension/6/applications-menu/), [8](https://extensions.gnome.org/extension/8/places-status-indicator/), [19](https://extensions.gnome.org/extension/19/user-themes/) and enable them.
+
+The default behviour is to only download and install said extensions but enabling them is left to the user's choice. It is possible to auto-enable extensions during install time by passing the `--enable` flag (Recommended).
+
+For more options, run `./install_gnome_extensions.sh --help` to see the command options.
 
 
-### 4. Enabling installed extensions
+### 4. (Optional) Manually Enabling/Disabling Installed Extensions
 
-Now, you would want to enable the installed extensions. You can do so by using the [GNOME Tweak Tool app](https://linuxconfig.org/how-to-install-tweak-tool-on-ubuntu-18-04-bionic-beaver-linux) with relative ease.
+This step is optional. By default, the script only downloads and installs extensions but does not enable them unless you've specified the`--enable` flag (Recommended) when running the script.
+
+But, if you want to manually enable/disable select extensions, you can do so by using the [GNOME Tweak Tool app](https://linuxconfig.org/how-to-install-tweak-tool-on-ubuntu-18-04-bionic-beaver-linux) with relative ease.
 
 For Ubuntu: `sudo apt install -y gnome-tweak-tool && gnome-tweaks`
 
