@@ -135,10 +135,10 @@ function install_shell_extensions(){
 
         printf "\n${info_text_blue}Please wait..."
         filename="$(basename "$download_url")";
-        wget -q "$download_url";
-        mkdir -p "$target_installation_dir";
-        unzip -o -q "$filename" -d "$target_installation_dir";
-        sleep 1
+        wget -q "$download_url" &&
+        mkdir -p "$target_installation_dir" &&
+        unzip -o -q "$filename" -d "$target_installation_dir" &&
+        sleep 1 &&
         rm "$filename";
 
         if [ "$ENABLE_ALL" = "false" ]; then
