@@ -130,10 +130,10 @@ function install_shell_extensions(){
         printf "\nInstalling to: \"$target_installation_dir\"";
 
         if [ -d "$target_installation_dir" ]  && [ "$OVERWRITE_EXISTING" = "false" ]; then
-            confirm_action "${normal_text}This extension is already installed. Do you want to overwrite it? (y/n): " && printf "\n" || continue;
+            confirm_action "${normal_text}This extension is already installed. Do you want to overwrite it? (y/n): " || continue;
         fi
 
-        printf "${info_text_blue}Please wait..."
+        printf "\n${info_text_blue}Please wait..."
         filename="$(basename "$download_url")";
         wget -q "$download_url";
         mkdir -p "$target_installation_dir";
