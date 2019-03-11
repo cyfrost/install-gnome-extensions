@@ -29,6 +29,8 @@ You can download and run this script directly from the browser or by using the c
 
 `rm -f ./install_gnome_extensions.sh; wget -N -q "https://github.com/cyfrost/install-gnome-extensions/raw/master/install_gnome_extensions.sh" -O ./install_gnome_extensions.sh && chmod +x install_gnome_extensions.sh && ./install_gnome_extensions.sh`
 
+The above command will: remove if the script file already exists, download the latest version from repo, set executable perms (user only) and run it.
+
 ### 2. Get the IDs of Extensions you want to install
 
 This script works by using the relevant Extension IDs to download and install them. Each extension takes a unique ID which is almost always visible in its URL page.
