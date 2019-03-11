@@ -7,7 +7,7 @@
 # License: MIT
 # Author: Cyfrost
 # ========================================================================================================
-
+echo "test"
 #vars
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed gnome-shell-extension-tool gnome-shell cut basename)
