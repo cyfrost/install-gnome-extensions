@@ -51,7 +51,7 @@ function CheckDependencies(){
     dependencies=("$@")
     for name in "${dependencies[@]}"
     do
-        command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\nError: command not found: $name${normal_text}";deps=1; }
+        command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\n[Error] Command not found: \"$name\"${normal_text}";deps=1; }
     done
     [[ $deps -ne 1 ]] && echo "${info_text_blue}OK${normal_text}" || { echo -en "${error_text}\n\nOne or more dependencies is unavailable. Please make sure the above commands are available and re-run this script.\n\n${status_text_yellow}For Ubuntu and similar distros, try: $deps_install_apt\n\nFor Fedora and similar distros, try: $deps_install_dnf\n\n${normal_text}";exit 1; }
 }
@@ -204,8 +204,3 @@ if [ "$args_count" -eq 0 ] || [ "$extensions_count" -eq 0 ]; then
 else
     begin_install
 fi
-
-
-# Install dependencies if needed (Ubuntus* ships with them, but Fedora doesn't afaik). detect os and install echo commands.
-# sudo dnf install wget curl jq unzip -y
-# sudo apt install wget curl jq unzip -y
