@@ -1,12 +1,12 @@
 # Install GNOME Shell Extensions
 This is a simple bash script that you can run to automatically download and install all the [GNOME Shell Extensions](https://extensions.gnome.org/) you want.
 
-## Why?
+### Why?
 Setting up a new GNOME desktop on any distro often involves downloading and installing some GNOME Shell extensions you like or want. This script automates that by only requiring the relevant extension IDs.
 
 ## How This Works
 
-The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of useful extensions contributed from many users for the GNOME desktop. Each extension gets a unique number called extension ID. Find and pass the IDs of extensions you want installed as arguments when running this script and will be downloaded and installed (latest extension version available matching your GNOME Shell version).
+The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of useful extensions contributed from many users for the GNOME desktop. Each extension gets a unique number called extension ID (which is [visible in the extension URL](https://github.com/cyfrost/install-gnome-extensions#2-get-the-ids-of-extensions-you-want-to-install-find-id)). Find and pass the IDs of extensions you want installed as arguments when running this script and will be downloaded and installed (latest extension version available matching your GNOME Shell version).
 
 ## Download & Usage
 
@@ -29,7 +29,7 @@ You can download and run this script directly from the browser or by using the c
 
 `wget -O install_gnome_extensions.sh https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install_gnome_extensions.sh && chmod +x install_gnome_extensions.sh && ./install_gnome_extensions.sh`
 
-### 2. Get the IDs of Extensions you want to install (#find-id)
+### 2. Get the IDs of Extensions you want to install
 
 This script works by using the relevant Extension IDs to download and install them. Each extension takes a unique ID which is almost always visible in its URL page.
 
@@ -66,7 +66,7 @@ You can find and enable extensions from GNOME Tweak Tool app > "Extensions" page
 
 ## Contributing
 
-Please [create an Issue](https://github.com/cyfrost/install-gnome-extensions/issues) for any suggestions, bug report you may have with this script. Or, better yet, [send a Pull Request](https://github.com/cyfrost/install-gnome-extensions/pulls) if the you've the fixes available.
+Please [Create an Issue](https://github.com/cyfrost/install-gnome-extensions/issues) for any suggestions, bug report you may have with this script. Or, better yet, [Send a Pull Request](https://github.com/cyfrost/install-gnome-extensions/pulls) if you have the fixes ready.
 
 ## License
 
