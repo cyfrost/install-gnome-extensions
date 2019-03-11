@@ -49,7 +49,7 @@ All the specified extensions will be downloaded and installed automatically.
 
 #### Example:
 
-`./install_gnome_extensions.sh 6 8 19` 
+`./install_gnome_extensions.sh --enable 6 8 19` 
 
 This example will install extensions with IDs [6](https://extensions.gnome.org/extension/6/applications-menu/), [8](https://extensions.gnome.org/extension/8/places-status-indicator/), [19](https://extensions.gnome.org/extension/19/user-themes/). 
 
