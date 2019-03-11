@@ -111,10 +111,10 @@ function confirm_action() {
 done
 }
 
-printf "\n================================\nGNOME Shell Extensions Installer\n================================\nThis script allows you to install your favourite GNOME Shell extensions with ease of use.\nSee https://github.com/cyfrost/install-gnome-extensions/blob/master/README.md for more info.\n${normal_text}";
+printf "\n================================\nGNOME Shell Extensions Installer\n================================\n\nThis script allows you to install your favourite GNOME Shell extensions with ease of use.\n${normal_text}";
 
 if [ "$extensions_count" -eq 0 ]; then
-    printf "\n${status_text}Usage: sh install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...${normal_text}\n\nExample usage: ./install_gnome_extensions.sh 6 8 19\n\n";
+    printf "\n${status_text}Usage: ./install_gnome_extensions.sh <extension_id1> <extension_id2> <extension_id3> ...${normal_text}\n\nExample usage: ./install_gnome_extensions.sh 6 8 19\n\n";
 else
     printf "\nGNOME Shell version detected: $gnome_shell_version\nStarting installation for $extensions_count extensions...\n";
     install_shell_extensions;
