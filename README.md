@@ -16,9 +16,9 @@ This script depends on: `curl, wget, jq, unzip, gnome-shell-extension-tool` (for
 
 You most probably already have these dependencies installed, otherwise you can do:
 
-For Ubuntu: `sudo apt install -y curl wget jq unzip`
+For Ubuntu: `$ sudo apt install -y curl wget jq unzip`
 
-For Fedora: `sudo dnf install -y curl wget jq unzip`
+For Fedora: `$ sudo dnf install -y curl wget jq unzip`
 
 
 ## Getting the Extensions
@@ -27,7 +27,7 @@ For Fedora: `sudo dnf install -y curl wget jq unzip`
 
 You can download and run this script directly from the browser or by using the command:
 
-`rm -f ./install_gnome_extensions.sh; wget -N -q "https://github.com/cyfrost/install-gnome-extensions/raw/master/install_gnome_extensions.sh" -O ./install_gnome_extensions.sh && chmod +x install_gnome_extensions.sh && ./install_gnome_extensions.sh`
+`$ rm -f ./install_gnome_extensions.sh; wget -N -q "https://github.com/cyfrost/install-gnome-extensions/raw/master/install_gnome_extensions.sh" -O ./install_gnome_extensions.sh && chmod +x install_gnome_extensions.sh && ./install_gnome_extensions.sh`
 
 The above command will: remove if the script file already exists, download the latest version from repo, set executable perms (user only) and run it.
 
@@ -45,30 +45,30 @@ This script should NOT be run as root since it needs the user's local directory 
 
 Open a Terminal window in the location of the script and run it along with Extension IDs as arguments:
 
-`./install_gnome_extensions.sh <extension_id1> <extension_id2> .....`
+`$ ./install_gnome_extensions.sh <extension_id1> <extension_id2> .....`
 
 All the specified extensions will be downloaded and installed automatically.
 
 #### Example:
 
-`./install_gnome_extensions.sh --enable 6 8 19` 
+`$ ./install_gnome_extensions.sh --enable 6 8 19` 
 
 This example will install extensions with IDs [6](https://extensions.gnome.org/extension/6/applications-menu/), [8](https://extensions.gnome.org/extension/8/places-status-indicator/), [19](https://extensions.gnome.org/extension/19/user-themes/) and enable them.
 
 The default behviour is to only download and install said extensions but enabling them is left to the user's choice. It is possible to auto-enable extensions during install time by passing the `--enable` flag (Recommended).
 
-For more options, run `./install_gnome_extensions.sh --help` to see the command options.
+For more options, run `$ ./install_gnome_extensions.sh --help` to see the command options.
 
 
 ### 4. (Optional) Manually Enabling/Disabling Installed Extensions
 
-This step is optional. By default, the script only downloads and installs extensions but does not enable them unless you've specified the`--enable` flag (Recommended) when running the script.
+This step is optional. By default, the script only downloads and installs extensions but does not enable them unless you've specified the `--enable` flag (Recommended) when running the script.
 
 But, if you want to manually enable/disable select extensions, you can do so by using the [GNOME Tweak Tool app](https://linuxconfig.org/how-to-install-tweak-tool-on-ubuntu-18-04-bionic-beaver-linux) with relative ease.
 
-For Ubuntu: `sudo apt install -y gnome-tweak-tool && gnome-tweaks`
+For Ubuntu: `$ sudo apt install -y gnome-tweak-tool && gnome-tweaks`
 
-For Fedora: `sudo dnf install -y gnome-tweak-tool && gnome-tweaks`
+For Fedora: `$ sudo dnf install -y gnome-tweak-tool && gnome-tweaks`
 
 You can find and enable extensions from GNOME Tweak Tool app > "Extensions" page.
 
