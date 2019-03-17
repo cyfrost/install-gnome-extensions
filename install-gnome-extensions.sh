@@ -2,7 +2,7 @@
 
    #################################################################
    #                                                               #
-   #             GNOME Shell Extension Installer v1.1             #
+   #             GNOME Shell Extension Installer v1.1.1            #
    #                                                               #
    #  A simple (scriptable) way to install GNOME Shell Extensions! #
    #                                                               #      
@@ -14,7 +14,7 @@
    #################################################################
 
 #vars
-script_revision="v1.1"
+script_revision="v1.1.1"
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed egrep gnome-shell-extension-tool sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
@@ -35,7 +35,15 @@ status_text_yellow=$(tput setaf 3);
 # Bail immediately if running as root.
 function CheckIfRunningAsRoot(){
     if [ "$(id -u)" = 0 ]; then
-        printf "\n${error_text}Running this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.\n\nNote: If you're trying to install extensions for another user on this computer, try 'su <user_account_name>' and proceed.\n\nAbort.\n\n${normal_text}"
+        printf "
+${error_text}Running this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.
+
+Note: If you're trying to install extensions for another user on this computer, try 'su <user_account_name>' and proceed.
+
+Abort.
+
+${normal_text}"
+
         exit 1
     fi
 }
@@ -184,11 +192,45 @@ function IsNumber(){
 
 function print_usage(){
     print_banner
-    printf "\n${normal_text}Usage: ./install-gnome-extensions.sh [options] <extension_ids>\n\nOptions:\n\t-e, --enable\tEnables the extension after downloading and installing it.\n\t-u, --update\tUpdates existing extensions to latest available versions.\n\t-o, --overwrite\tOverwrites existing extensions, disabled by default.\n\t-l. --list\tLists the UUIDs of installed extensions.\n\t-f, --file\tSupply a file containing links of extensions to install.\n\t-h, --help\tDisplay help message.\n\nExample usage: ./install-gnome-extensions.sh 6 8 19 --enable\n\n";
+
+
+printf "
+Usage: ./install-gnome-extensions.sh [options] <extension_ids> | [links_file] 
+
+Options:
+    -e, --enable        Enable extension after installing it.
+    -u, --update        Updates existing extensions to latest available versions.
+    -o, --overwrite     Overwrites existing extensions.
+    -l. --list          Lists the UUIDs of installed extensions.
+    -f, --file          Specify a file containing extension links to install.
+    -h, --help          Display this help message.
+
+
+Example usages:
+---------------
+
+1) ./install-gnome-extensions.sh 6 8 19 --enable
+    
+    Installs and enables extensions with IDs 6, 8, and 19.
+
+2) ./install-gnome-extensions.sh -e --file links.txt
+
+    Installs and enables the extensions from the URLs specified in "links.txt" file.
+
+";
 }
 
 function print_banner(){
-printf "${normal_text}\n=======================================\nGNOME Shell Extensions Installer $script_revision\n=======================================\n\nA simple (scriptable) way to install GNOME Shell extensions.\n\nhttps://github.com/cyfrost/install-gnome-extensions${normal_text}\n";
+printf "${normal_text}
+===========================================================
+
+    GNOME Shell Extensions Installer $script_revision
+
+A simple (scriptable) way to install GNOME Shell extensions.
+
+https://github.com/cyfrost/install-gnome-extensions
+
+===========================================================\n";
 }
 
 function trim_file(){
