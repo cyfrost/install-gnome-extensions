@@ -1,4 +1,4 @@
-# Install GNOME Shell Extensions
+# Install GNOME Shell Extensions Script
 A simple shell script that can automagically download, install, and enable all the [GNOME Shell Extensions](https://extensions.gnome.org/) on-the-fly!
 
 ### Why?
