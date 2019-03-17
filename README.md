@@ -26,10 +26,8 @@ For Fedora: `$ sudo dnf install -y curl wget jq unzip`
 
 You can always get the latest version of this script using a single-command:
 
-```
-$ rm -f ./install-gnome-extensions.sh; wget -N -q "https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install-gnome-extensions.sh" -O ./install-gnome-extensions.sh && chmod +x install-gnome-extensions.sh && ./install-gnome-extensions.sh
 
-```
+`$ rm -f ./install-gnome-extensions.sh; wget -N -q "https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install-gnome-extensions.sh" -O ./install-gnome-extensions.sh && chmod +x install-gnome-extensions.sh && ./install-gnome-extensions.sh`
 
 ## Step 3: Choose the extensions you want to install
 
@@ -47,7 +45,6 @@ Open a text editor and copy paste the below links:
 https://extensions.gnome.org/extension/6/applications-menu/
 https://extensions.gnome.org/extension/307/dash-to-dock/
 https://extensions.gnome.org/extension/8/places-status-indicator/
-
 ```
 save it as "links.txt" and close the editor.
 
