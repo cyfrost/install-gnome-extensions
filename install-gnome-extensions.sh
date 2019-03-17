@@ -2,9 +2,11 @@
 
    #################################################################
    #                                                               #
-   #             GNOME Shell Extension Installer 1.0.2             #
+   #             GNOME Shell Extension Installer v1.1             #
    #                                                               #
-   #       Copyright (C) 2019 Cyfrost <cyrus.frost@hotmail.com>    #
+   #  A simple (scriptable) way to install GNOME Shell Extensions! #
+   #                                                               #      
+   #       Author: Cyrus Frost                                     #
    #       License: MIT                                            #
    #                                                               #
    #     https://github.com/cyfrost/install-gnome-extensions       #
@@ -12,9 +14,9 @@
    #################################################################
 
 #vars
-script_revision="v1.0.2"
+script_revision="v1.1"
 args_count="$#"
-dependencies=(wget curl jq unzip tput sed gnome-shell-extension-tool gnome-shell cut basename)
+dependencies=(wget curl jq unzip tput sed egrep gnome-shell-extension-tool sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
 deps_install_dnf="sudo dnf install -y wget curl jq unzip sed"
 EXTENSIONS_TO_INSTALL=()
@@ -72,7 +74,7 @@ function confirm_action() {
         case $yn in
             [Yy]* ) return 0;;
             [Nn]* ) return 1;;
-            * ) echo "Please answer with 'y' or 'n'.";;
+            * ) printf "\nPlease answer with 'y' or 'n'.";;
         esac
     done
 }
@@ -179,52 +181,87 @@ function IsNumber(){
 }
 
 function print_usage(){
-    printf "\n${normal_text}Usage: ./install-gnome-extensions.sh [options] <extension_ids>\n\nOptions:\n\t--enable\tEnables the extension after downloading and installing it.\n\t--update\tUpdates existing extensions to latest available versions.\n\t--overwrite\tOverwrites existing extensions, disabled by default.\n\t--list-installed    Lists the UUIDs of installed extensions.\n\nExample usage: ./install-gnome-extensions.sh 6 8 19 --enable\n\n";
+    print_banner
+    printf "\n${normal_text}Usage: ./install-gnome-extensions.sh [options] <extension_ids>\n\nOptions:\n\t-e, --enable\tEnables the extension after downloading and installing it.\n\t-u, --update\tUpdates existing extensions to latest available versions.\n\t-o, --overwrite\tOverwrites existing extensions, disabled by default.\n\t-l. --list\tLists the UUIDs of installed extensions.\n\t-f, --file\tSupply a file containing links of extensions to install.\n\t-h, --help\tDisplay help message.\n\nExample usage: ./install-gnome-extensions.sh 6 8 19 --enable\n\n";
 }
 
 function print_banner(){
-printf "${normal_text}\n=======================================\nGNOME Shell Extensions Installer $script_revision\n=======================================\n\nA simple (scriptable) way to install your favourite GNOME Shell extensions.\n\nGitHub: https://github.com/cyfrost/install-gnome-extensions${normal_text}\n";
+printf "${normal_text}\n=======================================\nGNOME Shell Extensions Installer $script_revision\n=======================================\n\nA simple (scriptable) way to install GNOME Shell extensions.\n\nhttps://github.com/cyfrost/install-gnome-extensions${normal_text}\n";
+}
+
+function trim_file(){
+    file="$1"
+    sed -i '/^[[:blank:]]*$/ d' $file && awk '{$1=$1};1' $file > tmp && mv tmp $file
+}
+
+function install_exts_from_links_file(){
+
+    file="$1"
+    if [ ! -f "$file" ] || [ ! -s "$file" ]; then
+        printf "\n${error_text}Error: Supplied argument (\"$1\") is either not a valid file or is empty.${normal_text}\n\nPlease gather all extension links in a text file (line-by-line) and try again.\n\nSample usage: ./install-gnome-extensions --file links.txt\n\n";
+        exit 1;
+    fi
+
+    trim_file $file
+
+    printf "\nParsing file \"$file\" for extension links...\n"
+    
+    while IFS="" read -r p || [ -n "$p" ]; do
+        url="$(echo "$p" | sed '/^[[:space:]]*$/d')"
+        ext_id="$(echo "$url" | tr '\n' ' ' | sed -e 's/[^0-9]/ /g' -e 's/^ *//g' -e 's/ *$//g' | tr -s ' ' | awk '{print $1;}')"
+        IsNumber "$ext_id" && EXTENSIONS_TO_INSTALL+=($ext_id) || printf "\n${error_text}Error: Invalid URL: $url (Skipping this).${normal_text}";
+    done < links.txt
+    printf "\n"
 }
 
 function begin_install(){
 
-    printf "\n${info_text_blue}[Info] Detected GNOME Shell version: $GNOME_SHELL_VERSION\n\nStarting installation for $extensions_count extensions...\n${normal_text}";
+    exts_list="$(printf '%s, ' "${EXTENSIONS_TO_INSTALL[@]}")"
+    exts_list=${exts_list%, };
+
+    print_banner
+    printf "\n${info_text_blue}[Info] Detected GNOME Shell version: $GNOME_SHELL_VERSION\n\nStarting installation for $extensions_count extensions ($exts_list)...\n${normal_text}"
     install_shell_extensions;
     printf "\n${normal_text}Complete!\n\n";
     IsEnvGNOME || printf "${normal_text}Please login to GNOME desktop to see the installed/enabled extensions.\n\n"
 }
 
+# Obtain GNOME Shell version.
+GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)";
+
 while test $# -gt 0; do
     case "$1" in
-        --enable)
+        -e|--enable)
             ENABLE_ALL=true
             ;;
-        --update) 
+        -u|--update) 
             UPDATE=true
             ;;
-        --overwrite) 
+        -o|--overwrite) 
             OVERWRITE_EXISTING=true
             ;;
-        --help) 
+        -h|--help) 
             print_usage; exit 0;
             ;;
-        --list-installed) 
-            get_installed_extensions_list; echo -en "\n============================\nInstalled extensions (UUIDs)\n============================\n\n$INSTALLED_EXTs\n\n$INSTALLED_EXT_COUNT extensions are installed.\n\nDone!\n\n"; exit 0;
+        -l|--list) 
+            get_installed_extensions_list; printf "\n============================\nInstalled extensions (UUIDs)\n============================\n\n$INSTALLED_EXTs\n\n$INSTALLED_EXT_COUNT extensions are installed.\n\nDone!\n\n"; exit 0;
+            ;;
+        -f|--file) 
+            install_exts_from_links_file "$2";
             ;;
     esac
     IsNumber "$1" && EXTENSIONS_TO_INSTALL+=($1)
     shift
 done
 
-# Obtain GNOME Shell version.
-GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)";
-
 extensions_count="${#EXTENSIONS_TO_INSTALL[@]}"
 
-print_banner
-
-if [ "$args_count" -eq 0 ] || [ "$extensions_count" -eq 0 ]; then
+if [ "$args_count" -eq 0 ]; then
+    printf "\n${error_text}Invalid usage.\n${normal_text}"
     print_usage
+
+elif [ "$extensions_count" -eq 0 ]; then
+    printf "\n${error_text}Error: Could not find any valid extension IDs or URLs for installation.\n${normal_text}\n"; exit 1;
 else
     begin_install
 fi
