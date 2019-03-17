@@ -1,14 +1,18 @@
 #!/bin/bash
 
-# ========================================================================================================
-# This bash script allows users to install GNOME Shell Extensions by taking Extension IDs as arguments.
-# This will only work on an actively running GNOME desktop instance.
-# Homepage: https://github.com/cyfrost/install-gnome-extensions
-# License: MIT
-# Author: Cyfrost
-# ========================================================================================================
+   #################################################################
+   #                                                               #
+   #             GNOME Shell Extension Installer 1.0.2             #
+   #                                                               #
+   #       Copyright (C) 2019 Cyfrost <cyrus.frost@hotmail.com>    #
+   #       License: MIT                                            #
+   #                                                               #
+   #     https://github.com/cyfrost/install-gnome-extensions       #
+   #                                                               #
+   #################################################################
 
 #vars
+script_revision="v1.0.2"
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed gnome-shell-extension-tool gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
@@ -16,23 +20,25 @@ deps_install_dnf="sudo dnf install -y wget curl jq unzip sed"
 EXTENSIONS_TO_INSTALL=()
 OVERWRITE_EXISTING=false
 ENABLE_ALL=false
-
-# Bail immediately if running as root.
-function CheckIfRunningAsRoot(){
-    if [ "$(id -u)" = 0 ]; then
-        printf "\nRunning this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.\n\n"
-        exit 1
-    fi
-}
-
-# Bail immediately if running as root.
-CheckIfRunningAsRoot
+INSTALLED_EXT_COUNT='';
+INSTALLED_EXTs='';
 
 # message colors.
 info_text_blue=$(tput setaf 2);
 normal_text=$(tput sgr0);
 error_text=$(tput setaf 1);
 status_text_yellow=$(tput setaf 3);
+
+# Bail immediately if running as root.
+function CheckIfRunningAsRoot(){
+    if [ "$(id -u)" = 0 ]; then
+        printf "\n${error_text}Running this script as root is discouraged and won't work since it needs user directories to operate. Retry as normal user.\n\nNote: If you're trying to install extensions for another user on this computer, try 'su <user_account_name>' and proceed.\n\nAbort.\n\n${normal_text}"
+        exit 1
+    fi
+}
+
+# Bail immediately if running as root.
+CheckIfRunningAsRoot
 
 # Trap SIGINT and SIGTERM.
 function _term() {
@@ -47,13 +53,13 @@ trap _term INT TERM
 # This function can check for binaries/commands to be available in Env PATH and report otherwise.
 function CheckDependencies(){
 
-    echo -en "\n${info_text_blue}Checking dependencies...${normal_text}";
+    # echo -en "\n${info_text_blue}Checking dependencies...${normal_text}";
     dependencies=("$@")
     for name in "${dependencies[@]}"
     do
         command -v "$name" >/dev/null 2>&1 || { echo -en "${error_text}\n[Error] Command not found: \"$name\"${normal_text}";deps=1; }
     done
-    [[ $deps -ne 1 ]] && echo "${info_text_blue}OK${normal_text}" || { echo -en "${error_text}\n\nOne or more dependencies is unavailable. Please make sure the above commands are available and re-run this script.\n\n${status_text_yellow}For Ubuntu and similar distros, try: $deps_install_apt\n\nFor Fedora and similar distros, try: $deps_install_dnf\n\n${normal_text}";exit 1; }
+    [[ $deps -ne 1 ]] || { echo -en "${error_text}\n\nOne or more dependencies is unavailable. Please make sure the above commands are available and re-run this script.\n\n${status_text_yellow}For Ubuntu and similar distros, try: $deps_install_apt\n\nFor Fedora and similar distros, try: $deps_install_dnf\n\n${normal_text}";exit 1; }
 }
 
 # Fail if dependencies unmet.
@@ -98,6 +104,16 @@ function disable_extension(){
     gnome-shell-extension-tool -d "$ext_uuid" >/dev/null 2>&1
 }
 
+function get_installed_extensions_list(){
+user_extensions_path="/home/$USER/.local/share/gnome-shell/extensions";
+array=($(ls -l $user_extensions_path --time-style=long-iso | egrep '^d' | awk '{print $8}'));
+ext_list=$(printf "'%s'," "${array[@]}");
+ext_list=${ext_list%,};
+INSTALLED_EXT_COUNT="${#array[@]}"
+INSTALLED_EXTs=$(printf '%s\n' "${array[@]}");
+# echo $ext_list
+}
+
 function install_shell_extensions(){
     
     for ext_id in "${EXTENSIONS_TO_INSTALL[@]}"; do
@@ -106,7 +122,7 @@ function install_shell_extensions(){
         http_response="$(curl -s -o /dev/null -I -w "%{http_code}" "$request_url")";
 
         if [ "$http_response" = 404 ]; then
-            printf "\n${error_text}Error: No extension exists with ID $ext_id (Skipping this).\n";
+            printf "\n${error_text}Error: No extension exists matching the ID: $ext_id and GNOME Shell version $GNOME_SHELL_VERSION (Skipping this).\n";
             continue;
         fi
         
@@ -163,23 +179,20 @@ function IsNumber(){
 }
 
 function print_usage(){
-    printf "\n${normal_text}Usage: ./install_gnome_extensions.sh [options] <extension_ids>\n\nOptions:\n\t--enable\tEnables the extension after downloading and installing it.\n\t--update\tUpdates existing extensions to latest available versions.\n\t--overwrite\tOverwrites existing extensions, disabled by default.\n\nExample usage: ./install_gnome_extensions.sh 6 8 19 --enable\n\n";
+    printf "\n${normal_text}Usage: ./install-gnome-extensions.sh [options] <extension_ids>\n\nOptions:\n\t--enable\tEnables the extension after downloading and installing it.\n\t--update\tUpdates existing extensions to latest available versions.\n\t--overwrite\tOverwrites existing extensions, disabled by default.\n\t--list-installed    Lists the UUIDs of installed extensions.\n\nExample usage: ./install-gnome-extensions.sh 6 8 19 --enable\n\n";
+}
+
+function print_banner(){
+printf "${normal_text}\n=======================================\nGNOME Shell Extensions Installer $script_revision\n=======================================\n\nA simple (scriptable) way to install your favourite GNOME Shell extensions.\n\nGitHub: https://github.com/cyfrost/install-gnome-extensions${normal_text}\n";
 }
 
 function begin_install(){
 
-    printf "\nGNOME Shell version detected: $GNOME_SHELL_VERSION\nStarting installation for $extensions_count extensions...\n";
+    printf "\n${info_text_blue}[Info] Detected GNOME Shell version: $GNOME_SHELL_VERSION\n\nStarting installation for $extensions_count extensions...\n${normal_text}";
     install_shell_extensions;
     printf "\n${normal_text}Complete!\n\n";
     IsEnvGNOME || printf "${normal_text}Please login to GNOME desktop to see the installed/enabled extensions.\n\n"
 }
-
-
-# Obtain GNOME Shell version.
-GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)";
-
-printf "${status_text_yellow}\n================================\nGNOME Shell Extensions Installer\n================================\n\nThis script allows you to install your favourite GNOME Shell extensions with ease of use.\n\nHomepage: https://github.com/cyfrost/install-gnome-extensions${normal_text}\n";
-
 
 while test $# -gt 0; do
     case "$1" in
@@ -187,20 +200,28 @@ while test $# -gt 0; do
             ENABLE_ALL=true
             ;;
         --update) 
-		   	UPDATE=true
+            UPDATE=true
             ;;
         --overwrite) 
-		    OVERWRITE_EXISTING=true
+            OVERWRITE_EXISTING=true
             ;;
         --help) 
-		    print_usage; exit 0;
+            print_usage; exit 0;
+            ;;
+        --list-installed) 
+            get_installed_extensions_list; echo -en "\n============================\nInstalled extensions (UUIDs)\n============================\n\n$INSTALLED_EXTs\n\n$INSTALLED_EXT_COUNT extensions are installed.\n\nDone!\n\n"; exit 0;
             ;;
     esac
     IsNumber "$1" && EXTENSIONS_TO_INSTALL+=($1)
     shift
 done
 
+# Obtain GNOME Shell version.
+GNOME_SHELL_VERSION="$(gnome-shell --version | cut --delimiter=' ' --fields=3 | cut --delimiter='.' --fields=1,2)";
+
 extensions_count="${#EXTENSIONS_TO_INSTALL[@]}"
+
+print_banner
 
 if [ "$args_count" -eq 0 ] || [ "$extensions_count" -eq 0 ]; then
     print_usage
