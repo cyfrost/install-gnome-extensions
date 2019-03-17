@@ -6,7 +6,7 @@ A simple shell script that can automagically download, install, and enable all t
 
 The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of extensions for the GNOME desktop.
 
-Installing multiple extensions manually by-hand from the site can quickly become tiresome (especially if more than a few extensions), this script automates the process.
+Installing multiple extensions manually by-hand from the site can quickly get tiresome, this script automates the process.
 
 This script can be used for, say, automatically installing a bunch of extensions on a few computers (or on a new install).
 
