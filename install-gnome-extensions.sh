@@ -254,7 +254,7 @@ function install_exts_from_links_file(){
         url="$(echo "$p" | sed '/^[[:space:]]*$/d')"
         ext_id="$(echo "$url" | tr '\n' ' ' | sed -e 's/[^0-9]/ /g' -e 's/^ *//g' -e 's/ *$//g' | tr -s ' ' | awk '{print $1;}')"
         IsNumber "$ext_id" && EXTENSIONS_TO_INSTALL+=($ext_id) || printf "\n${error_text}Error: Invalid URL: $url (Skipping this).${normal_text}";
-    done < links.txt
+    done < $file
     printf "\n"
 }
 
