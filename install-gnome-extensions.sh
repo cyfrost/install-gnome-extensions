@@ -26,10 +26,11 @@ INSTALLED_EXT_COUNT='';
 INSTALLED_EXTs='';
 
 # message colors.
-info_text_blue=$(tput setaf 2);
+info_text_blue=$(tput setaf 7);
 normal_text=$(tput sgr0);
 error_text=$(tput setaf 1);
 status_text_yellow=$(tput setaf 3);
+
 
 # Bail immediately if running as root.
 function CheckIfRunningAsRoot(){
@@ -79,6 +80,7 @@ function confirm_action() {
     done
 }
 
+# check if current (active) desktop instance is GNOME.
 function IsEnvGNOME(){
 
     if [ "$XDG_CURRENT_DESKTOP" = "" ]; then
@@ -220,7 +222,7 @@ function begin_install(){
     exts_list=${exts_list%, };
 
     print_banner
-    printf "\n${info_text_blue}[Info] Detected GNOME Shell version: $GNOME_SHELL_VERSION\n\nStarting installation for $extensions_count extensions ($exts_list)...\n${normal_text}"
+    printf "\n${info_text_blue}[Info] Detected GNOME Shell version: $GNOME_SHELL_VERSION\n\nInstalling $extensions_count extensions ($exts_list)...\n${normal_text}"
     install_shell_extensions;
     printf "\n${normal_text}Complete!\n\n";
     IsEnvGNOME || printf "${normal_text}Please login to GNOME desktop to see the installed/enabled extensions.\n\n"
