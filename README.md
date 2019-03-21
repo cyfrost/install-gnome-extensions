@@ -104,6 +104,7 @@ Find and enable extensions from GNOME Tweak Tool app > "Extensions" page.
 3. Provide a script function to check if an extension is correctly installed and enabled (this can help in deciding what extensions to update/overwrite/ignore).
 5. Add cli options to list info (name, id, url etc) of installed extensions (partially added with [51e3e9d](https://github.com/cyfrost/install-gnome-extensions/commit/51e3e9da4b9a208a01fd4f95440a0577290e3fbe)).
 6. Add support to install extensions system-wide. currently extensions can only be installed for user specific.
+7. Add support to update all installed extensions to latest available versions (tricky: system-wide? user-specific? from repos?)
 
 ## Contributing
 
