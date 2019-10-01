@@ -2,13 +2,13 @@
 
 ## What
 
-A simple shell script that can automagically download, install, and enable all the [GNOME Shell Extensions](https://extensions.gnome.org/) on-the-fly!
+A simple shell script that can carefully-yet-automagically download, install, and enable all the [GNOME Shell Extensions](https://extensions.gnome.org/) on-the-fly!
 
 ## Why
 
 The [GNOME Shell Extensions website](https://extensions.gnome.org/) is a massive catalog of extensions for the GNOME desktop.
 
-Installing a few extensions by-hand can become tedious (especially if it's a repititive task).
+Installing a few extensions by-hand can become tedious (especially if it's a repetitive task --imaging few PCs).
 
 This script automates the whole process with an easy-to-use setup.
 
