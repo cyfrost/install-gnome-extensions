@@ -169,9 +169,7 @@ function install_shell_extensions(){
         sleep 1 &&
         rm "$filename";
 
-        if [ "$ENABLE_ALL" = "false" ]; then
-            confirm_action "${normal_text}Enable this extension now? (y/n): " && enable_extension "$ext_uuid";
-        else
+        if [ ! "$ENABLE_ALL" = "false" ]; then
             enable_extension "$ext_uuid"
         fi
         
