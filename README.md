@@ -20,8 +20,6 @@ Bonus: you don't have to install the GNOME Shell Integration browser extension a
 
 Since this is a simple shell script, it can be hot-linked (see Usage below) in one of your scripts and mass install all extensions you want.
 
-<br />
-
 ### A short overview of this script's inner-workings
 
 1. For all purposes (metadata retreival, installation, and status), this script uses the `extension_id` unique to each extension in the marketplace (in case a file is supplied with links, the id is parsed out using a simple regex).
@@ -31,7 +29,7 @@ Since this is a simple shell script, it can be hot-linked (see Usage below) in o
 
 ### Why does this script require sudo access?
 
-Each GNOME Shell extension that has configurable settings makes use of dconf profiles as a config store. These settings can then be manipulated via the `gsettings` command to easily configure an extension from the command-line. Said dconf profiles are created by compiling all the `.xml`  schema files located in `/usr/share/glib-2.0/schemas/`. So for every extension that needs a dconf profile, we have to copy its `.xml` schema file into that directory and then run the `sudo glib-compile-schemas /usr/share/glib-2.0/schemas/` command to generate a compiled schemas file that'll be used by tools like `gsettings` and Dconf Editor. Doing that will require root access since the `/usr/share/glib-2.0/schemas` is non-writable by users by default. [Here's](https://github.com/cyfrost/install-gnome-extensions/blob/7ea5327e36c35e732c6c97887c08fe3596506727/install-gnome-extensions.sh#L174) the part of the code that checks for schemas and compiles them. Lastly, if an extension's schemas aren't compiled, you won't be able to use `gsettings` to directly manipulate it, there are workarounds [1](https://askubuntu.com/questions/251712/how-can-i-install-a-gsettings-schema-without-root-privileges) [2](https://askubuntu.com/a/1008879/538011) though.
+Each GNOME Shell extension that has configurable settings makes use of dconf profiles as a config store. These settings can then be manipulated via the `gsettings` command to easily configure an extension from the command-line. Said dconf profiles are created by compiling all the `.xml`  schema files located in `/usr/share/glib-2.0/schemas/`. So for every extension that needs a dconf profile, we have to copy its `.xml` schema file into that directory and then run the `sudo glib-compile-schemas /usr/share/glib-2.0/schemas/` command to generate a compiled schemas file that'll be used by tools like `gsettings` and Dconf Editor. Doing that will require root access since the `/usr/share/glib-2.0/schemas` is non-writable by users by default. [Here's](https://github.com/cyfrost/install-gnome-extensions/blob/7ea5327e36c35e732c6c97887c08fe3596506727/install-gnome-extensions.sh#L174) the part of the code that checks for schemas and compiles them. Lastly, if an extension's schemas aren't compiled, you won't be able to use `gsettings` to directly manipulate it, there are workarounds [[here](https://askubuntu.com/questions/251712/how-can-i-install-a-gsettings-schema-without-root-privileges), and [here](https://askubuntu.com/a/1008879/538011)] though.
 
 **TL;DR**: To install Glib-2.0 schemas of the extension into non-writable (as `$USER`) directory (`/usr/share/glib-2.0/schemas`)
 
