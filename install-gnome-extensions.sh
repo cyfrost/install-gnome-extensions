@@ -2,7 +2,7 @@
 
    #################################################################
    #                                                               #
-   #             GNOME Shell Extension Installer v1.1.1            #
+   #             GNOME Shell Extension Installer v1.1.2            #
    #                                                               #
    #  A simple (scriptable) way to install GNOME Shell Extensions! #
    #                                                               #      
