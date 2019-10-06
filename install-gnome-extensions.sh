@@ -14,7 +14,7 @@
    #################################################################
 
 #vars
-script_revision="v1.1.1"
+script_revision="v1.1.2"
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed egrep gnome-shell-extension-tool sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
