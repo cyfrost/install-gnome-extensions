@@ -2,7 +2,7 @@
 
    #################################################################
    #                                                               #
-   #             GNOME Shell Extension Installer v1.1.2            #
+   #             GNOME Shell Extension Installer v1.2              #
    #                                                               #
    #  A simple (scriptable) way to install GNOME Shell Extensions! #
    #                                                               #      
@@ -14,7 +14,7 @@
    #################################################################
 
 #vars
-script_revision="v1.1.2"
+script_revision="v1.2"
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed egrep gnome-shell-extension-tool sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
@@ -161,20 +161,27 @@ function install_shell_extensions(){
             confirm_action "${normal_text}This extension is already installed. Do you want to overwrite it? (y/n): " || continue;
         fi
 
-        printf "\n${info_text_blue}Please wait..."
+        printf "\n${info_text_blue}Please wait...\n"
         filename="$(basename "$download_url")";
         wget -q "$download_url" &&
         mkdir -p "$target_installation_dir" &&
         unzip -o -q "$filename" -d "$target_installation_dir" &&
         sleep 1 &&
-        rm "$filename";
+        rm "$filename"
+        schemas_dir="$target_installation_dir/schemas"
+
+        if [ -d "$schemas_dir" ]; then
+            printf "${info_text_blue}Install GLib Schemas for dconf storage, this step will require sudo access...\n"
+            cd "$schemas_dir"
+            sudo cp ./*.xml "/usr/share/glib-2.0/schemas/"
+            sudo glib-compile-schemas /usr/share/glib-2.0/schemas/ >/dev/null 2>&1
+        fi
 
         if [ ! "$ENABLE_ALL" = "false" ]; then
             enable_extension "$ext_uuid"
         fi
         
-        printf "\n${info_text_blue}Done!\n";
-        printf "${normal_text}"
+        printf "${info_text_blue}Done!\n${normal_text}";
     done
     printf "\n";
 }
