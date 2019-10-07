@@ -2,7 +2,7 @@
 
    #################################################################
    #                                                               #
-   #             GNOME Shell Extension Installer v1.2              #
+   #             GNOME Shell Extension Installer v1.2.1            #
    #                                                               #
    #  A simple (scriptable) way to install GNOME Shell Extensions! #
    #                                                               #      
@@ -14,7 +14,7 @@
    #################################################################
 
 #vars
-script_revision="v1.2"
+script_revision="v1.2.1"
 args_count="$#"
 dependencies=(wget curl jq unzip tput sed egrep sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
