@@ -16,7 +16,7 @@
 #vars
 script_revision="v1.2"
 args_count="$#"
-dependencies=(wget curl jq unzip tput sed egrep gnome-shell-extension-tool sed awk gnome-shell cut basename)
+dependencies=(wget curl jq unzip tput sed egrep sed awk gnome-shell cut basename)
 deps_install_apt="sudo apt install -y wget curl jq unzip sed"
 deps_install_dnf="sudo dnf install -y wget curl jq unzip sed"
 EXTENSIONS_TO_INSTALL=()
@@ -108,12 +108,12 @@ function IsEnvGNOME(){
 
 function enable_extension(){
     ext_uuid="$1"
-    gnome-shell-extension-tool -e "$ext_uuid" >/dev/null 2>&1
+    gnome-extensions enable "$ext_uuid" >/dev/null 2>&1
 }
 
 function disable_extension(){
     ext_uuid="$1"
-    gnome-shell-extension-tool -d "$ext_uuid" >/dev/null 2>&1
+    gnome-extensions disable "$ext_uuid" >/dev/null 2>&1
 }
 
 function get_installed_extensions_list(){
